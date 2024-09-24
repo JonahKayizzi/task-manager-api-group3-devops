@@ -2,6 +2,7 @@ package com.fall2024devops.taskmanager.tasks.controller;
 
 import com.fall2024devops.taskmanager.common.response.GenericResponse;
 import com.fall2024devops.taskmanager.tasks.dto.CreateTaskDTO;
+import com.fall2024devops.taskmanager.tasks.dto.ListTasksDTO;
 import com.fall2024devops.taskmanager.tasks.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,11 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new GenericResponse<>("Task created successfully", createdTask));
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<GenericResponse<TaskDTO.TaskDTOOutput>> getTaskById(@PathVariable Long id) {
-//        TaskDTO.TaskDTOOutput task = taskService.getTaskById(id);
-//        return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>("Task retrieved successfully", task));
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<GenericResponse<ListTasksDTO.Output>> getTaskById(@PathVariable Long id) {
+        ListTasksDTO.Output task = taskService.getTaskById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>("Task retrieved successfully", task));
+    }
 //
 //    @GetMapping
 //    public ResponseEntity<GenericResponse<List<TaskDTO.TaskDTOOutput>>> getAllTasks() {

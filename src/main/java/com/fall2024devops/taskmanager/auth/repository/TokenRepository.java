@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TokenRepository extends JpaRepository<Token, Integer> {
+public interface TokenRepository extends JpaRepository<Token, Long> {
     @Query("SELECT t FROM Token t WHERE t.user.id = :id AND t.expired = false AND t.revoked = false")
     List<Token> findAllValidTokenByUser(Integer id);
 

@@ -5,6 +5,7 @@ import com.fall2024devops.taskmanager.common.exception.UnauthorizedException;
 import com.fall2024devops.taskmanager.common.utils.SecurityUtils;
 import com.fall2024devops.taskmanager.tasks.dto.CreateTaskDTO;
 import com.fall2024devops.taskmanager.tasks.dto.ListTasksDTO;
+import com.fall2024devops.taskmanager.tasks.dto.UpdateTaskDTO;
 import com.fall2024devops.taskmanager.tasks.entity.Task;
 import com.fall2024devops.taskmanager.tasks.repository.TaskRepository;
 import com.fall2024devops.taskmanager.user.entity.User;
@@ -56,6 +57,30 @@ public class TaskService {
                 foundTask.getUser().getId(),
                 foundTask.getCreatedAt(),
                 foundTask.getUpdatedAt()
+        );
+    }
+
+    public UpdateTaskDTO.Output updateTask(Long id, UpdateTaskDTO.Input input) {
+        // Fetch the task by id
+        Task task = taskRepository.findById(id).orElseThrow(() -> new NotFoundException("Task not found"));
+
+        // Update task fields
+        if (input.getTitle() != null) task.setTitle(input.getTitle());
+        if (input.getDescription() != null) task.setDescription(input.getDescription());
+        if (input.getStatus() != null) task.setStatus(input.getStatus());
+
+        // save the updated task
+        Task updatedTask = taskRepository.save(task);
+
+        // Return the updated task in Output format
+        return new UpdateTaskDTO.Output(
+            updatedTask.getId(),
+            updatedTask.getTitle(),
+            updatedTask.getDescription(),
+            updatedTask.getStatus(),
+            updatedTask.getUser().getId(),
+            updatedTask.getCreatedAt(),
+            updatedTask.getUpdatedAt()
         );
     }
 }

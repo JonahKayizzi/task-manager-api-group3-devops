@@ -91,8 +91,7 @@ public class TaskService {
                 updatedTask.getCreatedAt(),
                 updatedTask.getUpdatedAt()
         );
-        
-    
+    }
 
     public List<ListTasksDTO.Output> getAllTasks() {
         List<Task> tasks = taskRepository.findAll();

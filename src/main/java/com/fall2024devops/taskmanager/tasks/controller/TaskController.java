@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import static org.springframework.http.ResponseEntity.status;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,11 +42,11 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>("Task retrieved successfully", task));
     }
 
-   @GetMapping
-   public ResponseEntity<GenericResponse<ListTasksDTO.Output>> getAllTasks() {
-       ListTasksDTO.Output tasks = taskService.getAllTasks();
-       return status(HttpStatus.OK).body(new GenericResponse<>("Tasks retrieved successfully", tasks));
-   }
+    @GetMapping
+    public ResponseEntity<GenericResponse<List<ListTasksDTO.Output>>> getAllTasks() {
+        List<ListTasksDTO.Output> tasks = taskService.getAllTasks();
+        return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>("Tasks retrieved successfully", tasks));
+    }
 
 //    @PatchMapping("/{id}")
 //    public ResponseEntity<GenericResponse<TaskDTO.TaskDTOOutput>> updateTask(@PathVariable Long id, @RequestBody TaskDTO.TaskDTOInput taskDto) {

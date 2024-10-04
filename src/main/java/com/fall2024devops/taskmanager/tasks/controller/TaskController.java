@@ -3,6 +3,7 @@ package com.fall2024devops.taskmanager.tasks.controller;
 import com.fall2024devops.taskmanager.common.response.GenericResponse;
 import com.fall2024devops.taskmanager.tasks.dto.CreateTaskDTO;
 import com.fall2024devops.taskmanager.tasks.dto.ListTasksDTO;
+import com.fall2024devops.taskmanager.tasks.dto.UpdateTaskDTO;
 import com.fall2024devops.taskmanager.tasks.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,11 @@ public class TaskController {
 //        return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>("Tasks retrieved successfully", tasks));
 //    }
 //
-//    @PatchMapping("/{id}")
-//    public ResponseEntity<GenericResponse<TaskDTO.TaskDTOOutput>> updateTask(@PathVariable Long id, @RequestBody TaskDTO.TaskDTOInput taskDto) {
-//        TaskDTO.TaskDTOOutput updatedTask = taskService.updateTask(id, taskDto);
-//        return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>("Task updated successfully", updatedTask));
-//    }
+   @PatchMapping("/{id}")
+   public ResponseEntity<GenericResponse<UpdateTaskDTO.Output>> updateTask(@PathVariable Long id, @RequestBody UpdateTaskDTO.Input taskDto) {
+       UpdateTaskDTO.Output updatedTask = taskService.updateTask(id, taskDto);
+        return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>("Task updated successfully", updatedTask));
+    }
 //
 //    @DeleteMapping("/{id}")
 //    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {

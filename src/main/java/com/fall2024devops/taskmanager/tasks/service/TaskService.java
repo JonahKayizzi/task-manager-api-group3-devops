@@ -107,4 +107,10 @@ public class TaskService {
         ))
                 .toList();
     }
+    public void deleteTask(Long id) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Task not found"));
+        
+        taskRepository.delete(task);
+    }
 }

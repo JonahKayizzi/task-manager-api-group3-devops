@@ -1,4 +1,4 @@
-package com.fall2024devops.taskmanager.tasks.service;
+package com.fall2024devops.taskmanager;
 
 import com.fall2024devops.taskmanager.common.exception.NotFoundException;
 import com.fall2024devops.taskmanager.common.exception.UnauthorizedException;
@@ -79,11 +79,12 @@ class TaskServiceTest {
     void testUpdateTaskNotFound() {
         // Arrange
         UpdateTaskDTO updateTasksDTO = new UpdateTaskDTO();
+        UpdateTaskDTO.Input input = new UpdateTaskDTO.Input();
         when(taskRepository.findById(1L)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(NotFoundException.class, () -> {
-            taskService.updateTask(1L, updateTasksDTO);
+            taskService.updateTask(1L, input);
         });
     }
 

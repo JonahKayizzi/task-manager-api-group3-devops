@@ -107,21 +107,27 @@ class TaskServiceTest {
         }
     }
 
-    // @Test
-    // void testGetTaskById() {
-    //     // Arrange
-    //     Task task = new Task();
-    //     task.setId(1L);
-    //     task.setTitle("Test Task");
-    //     when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+    @Test
+    void testGetTaskById() {
+        // Arrange
+        // Mock the behaviour of the taskRepository.findById() method
+        // Because the taskService will call this method to get the task by id
+        // We know that the taskRepository.findById() method will return the task
+        // We are mocking it to avoid calling the actual database
+        User currentUser = new User(); // Mock current user
+        Task task = new Task("Test Task", "Test Description", "IN_PROGRESS", currentUser);
+        task.setId(1L);
+        task.setTitle("Test Task");
+        when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
 
-    //     // Act
-    //     ListTasksDTO.Output output = taskService.getTaskById(1L);
+        // Act
+        // Invoke the method to be tested
+        ListTasksDTO.Output output = taskService.getTaskById(1L);
 
-    //     // Assert
-    //     assertNotNull(output);
-    //     assertEquals("Test Task", output.getTitle());
-    // }
+        // Assert
+        assertNotNull(output);
+        assertEquals("Test Task", output.getTitle());
+    }
 
     // @Test
     // void testUpdateTaskNotFound() {

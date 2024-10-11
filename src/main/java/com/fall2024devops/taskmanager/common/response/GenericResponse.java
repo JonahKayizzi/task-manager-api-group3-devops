@@ -18,4 +18,8 @@ public class GenericResponse<T> {
     public String getActualMessage() {
         return message != null ? message.split("/")[0].trim() : null;
     }
+
+    public T getData() {
+        return payload;
+    }
 }

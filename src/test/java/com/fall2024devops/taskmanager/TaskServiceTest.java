@@ -1,5 +1,5 @@
-
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -7,11 +7,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 
+import com.fall2024devops.taskmanager.common.utils.SecurityUtils;
+import com.fall2024devops.taskmanager.tasks.dto.CreateTaskDTO;
 import com.fall2024devops.taskmanager.tasks.dto.ListTasksDTO;
 import com.fall2024devops.taskmanager.tasks.entity.Task;
 import com.fall2024devops.taskmanager.tasks.repository.TaskRepository;
@@ -41,6 +46,7 @@ class TaskServiceTest {
                 new Task("Test Task 2", "Test Description 2", "IN_PROGRESS", currentUser)
         ).collect(Collectors.toList());
 
+        //Act
         // Mock the behavour of the taskRepository to return the list of tasks
         // This is done to avoid calling the actual database
         // We know that the taskRepository will return the list of tasks
@@ -51,6 +57,7 @@ class TaskServiceTest {
         // Invoke the method to be tested
         List<ListTasksDTO.Output> output = taskService.getAllTasks();
 
+        // Assert
         // Make expected assertions to verify the output of the getAllTasks method
         assertNotNull(output);
         assertEquals(2, output.size());
@@ -58,5 +65,74 @@ class TaskServiceTest {
         assertEquals("Test Task 2", output.get(1).getTitle());
     }
 
-    // Add more tests for other methods...
+    @Test
+    void testCreateTask() {
+        // Arrange
+        // Prepare the input for the createTask method
+        // CreateTask uses the CreateTaskDTO.Input class to get the input
+        CreateTaskDTO.Input input = new CreateTaskDTO.Input();
+        input.setTitle("Test Task");
+        input.setDescription("Test Description");
+
+        User currentUser = new User(); // Mock current user
+        // Mock the behaviour of the SecurityUtils.getCurrentUser() method
+        // Because the taskService will call this method to get the current user
+        // We know that the SecurityUtils.getCurrentUser() method will return the currentUser
+        // We are mocking it to avoid calling the actual SecurityUtils.getCurrentUser() method
+        // This is done to avoid calling the actual database
+        try (MockedStatic<SecurityUtils> mockedSecurityUtils = mockStatic(SecurityUtils.class)) {
+            mockedSecurityUtils.when(SecurityUtils::getCurrentUser)
+                .thenReturn(Optional.of(currentUser));
+
+            // Mock the behaviour of the taskRepository.save() method
+            // Because the taskService will call this method to save the task
+            // We know that the taskRepository.save() method will return the saved task
+            // We are mocking it to avoid calling the actual database
+            Task savedTask = new Task(); // Mock saved task
+            savedTask.setId(1L);
+            savedTask.setTitle(input.getTitle());
+            savedTask.setDescription(input.getDescription());
+            savedTask.setStatus("IN_PROGRESS");
+            savedTask.setUser(currentUser); // Set the user to avoid NullPointerException
+            when(taskRepository.save(any(Task.class))).thenReturn(savedTask);
+
+            // Act
+            // Invoke the method to be tested
+            CreateTaskDTO.Output output = taskService.createTask(input);
+
+            // Assert
+            assertNotNull(output);
+            assertEquals(1L, output.getId());
+            assertEquals("Test Task", output.getTitle());
+        }
+    }
+
+    // @Test
+    // void testGetTaskById() {
+    //     // Arrange
+    //     Task task = new Task();
+    //     task.setId(1L);
+    //     task.setTitle("Test Task");
+    //     when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+
+    //     // Act
+    //     ListTasksDTO.Output output = taskService.getTaskById(1L);
+
+    //     // Assert
+    //     assertNotNull(output);
+    //     assertEquals("Test Task", output.getTitle());
+    // }
+
+    // @Test
+    // void testUpdateTaskNotFound() {
+    //     // Arrange
+    //     UpdateTaskDTO updateTasksDTO = new UpdateTaskDTO();
+    //     UpdateTaskDTO.Input input = new UpdateTaskDTO.Input();
+    //     when(taskRepository.findById(1L)).thenReturn(Optional.empty());
+
+    //     // Act & Assert
+    //     assertThrows(NotFoundException.class, () -> {
+    //         taskService.updateTask(1L, input);
+    //     });
+    // }
 }

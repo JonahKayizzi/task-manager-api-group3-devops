@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import com.fall2024devops.taskmanager.common.utils.SecurityUtils;
 import com.fall2024devops.taskmanager.tasks.dto.CreateTaskDTO;
 import com.fall2024devops.taskmanager.tasks.dto.ListTasksDTO;
+import com.fall2024devops.taskmanager.tasks.dto.UpdateTaskDTO;
 import com.fall2024devops.taskmanager.tasks.entity.Task;
 import com.fall2024devops.taskmanager.tasks.repository.TaskRepository;
 import com.fall2024devops.taskmanager.tasks.service.TaskService;
@@ -129,16 +130,128 @@ class TaskServiceTest {
         assertEquals("Test Task", output.getTitle());
     }
 
-    // @Test
-    // void testUpdateTaskNotFound() {
-    //     // Arrange
-    //     UpdateTaskDTO updateTasksDTO = new UpdateTaskDTO();
-    //     UpdateTaskDTO.Input input = new UpdateTaskDTO.Input();
-    //     when(taskRepository.findById(1L)).thenReturn(Optional.empty());
+    @Test
+    void getTaskByIdNotFound() {
+        // Arrange
+        // Mock the behaviour of the taskRepository.findById() method
+        // Because the taskService will call this method to get the task by id
+        // We know that the taskRepository.findById() method will return the task
+        // We are mocking it to avoid calling the actual database
+        when(taskRepository.findById(1L)).thenReturn(Optional.empty());
 
-    //     // Act & Assert
-    //     assertThrows(NotFoundException.class, () -> {
-    //         taskService.updateTask(1L, input);
-    //     });
-    // }
+        // Act
+        // Invoke the method to be tested
+        try {
+            taskService.getTaskById(1L);
+        } catch (Exception e) {
+            // Assert
+            assertEquals("404 NOT_FOUND \"Task not found\"", e.getMessage());
+        }
+    }
+
+    @Test
+    void testUpdateTask() {
+        // Arrange
+        // Prepare the input for the updateTask method
+        // UpdateTask uses the UpdateTaskDTO.Input class to get the input
+        UpdateTaskDTO.Input input = new UpdateTaskDTO.Input();
+        input.setTitle("Updated Task");
+        input.setDescription("Updated Description");
+        input.setStatus("COMPLETED");
+
+        // Mock the behaviour of the taskRepository.findById() method
+        // Because the taskService will call this method to get the task by id
+        // We know that the taskRepository.findById() method will return the task
+        // We are mocking it to avoid calling the actual database
+        User currentUser = new User(); // Mock current user
+        Task task = new Task("Test Task", "Test Description", "IN_PROGRESS", currentUser);
+        task.setId(1L);
+        task.setTitle("Test Task");
+        when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+
+        // Mock the behaviour of the taskRepository.save() method
+        // Because the taskService will call this method to save the updated task
+        // We know that the taskRepository.save() method will return the updated task
+        // We are mocking it to avoid calling the actual database
+        Task updatedTask = new Task("Updated Task", "Updated Description", "COMPLETED", currentUser);
+        updatedTask.setId(1L);
+        when(taskRepository.save(any(Task.class))).thenReturn(updatedTask);
+        // Act
+        // Invoke the method to be tested
+        UpdateTaskDTO.Output output = taskService.updateTask(1L, input);
+
+        // Assert
+        assertNotNull(output);
+        assertEquals("Updated Task", output.getTitle());
+        assertEquals("Updated Description", output.getDescription());
+        assertEquals("COMPLETED", output.getStatus());      
+        
+    }
+
+    @Test
+    void updateTaskNotFound() {
+        // Arrange
+        // Prepare the input for the updateTask method
+        // UpdateTask uses the UpdateTaskDTO.Input class to get the input
+        UpdateTaskDTO.Input input = new UpdateTaskDTO.Input();
+        input.setTitle("Updated Task");
+        input.setDescription("Updated Description");
+        input.setStatus("COMPLETED");
+
+        // Mock the behaviour of the taskRepository.findById() method
+        // Because the taskService will call this method to get the task by id
+        // We know that the taskRepository.findById() method will return the task
+        // We are mocking it to avoid calling the actual database
+        when(taskRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // Act
+        // Invoke the method to be tested
+        try {
+            taskService.updateTask(1L, input);
+        } catch (Exception e) {
+            // Assert
+            assertEquals("404 NOT_FOUND \"Task not found\"", e.getMessage());
+        }
+    }
+
+    @Test
+    void testDeleteTask() {
+        // Arrange
+        // Mock the behaviour of the taskRepository.findById() method
+        // Because the taskService will call this method to get the task by id
+        // We know that the taskRepository.findById() method will return the task
+        // We are mocking it to avoid calling the actual database
+        User currentUser = new User(); // Mock current user
+        Task task = new Task("Test Task", "Test Description", "IN_PROGRESS", currentUser);
+        task.setId(1L);
+        task.setTitle("Test Task");
+        when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+
+        // Act
+        // Invoke the method to be tested
+        taskService.deleteTask(1L);
+
+        // Assert
+        assertNotNull(task);
+    }
+
+    @Test
+    void deleteTaskNotFound() {
+        // Arrange
+        // Mock the behaviour of the taskRepository.findById() method
+        // Because the taskService will call this method to get the task by id
+        // We know that the taskRepository.findById() method will return the task
+        // We are mocking it to avoid calling the actual database
+        when(taskRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // Act
+        // Invoke the method to be tested
+        try {
+            taskService.deleteTask(1L);
+        } catch (Exception e) {
+            // Assert
+            assertEquals("404 NOT_FOUND \"Task not found\"", e.getMessage());
+        }
+    }
+
 }

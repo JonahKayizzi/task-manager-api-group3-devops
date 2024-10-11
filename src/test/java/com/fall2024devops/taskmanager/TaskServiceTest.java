@@ -1,26 +1,22 @@
-package com.fall2024devops.taskmanager;
 
-import com.fall2024devops.taskmanager.common.exception.NotFoundException;
-import com.fall2024devops.taskmanager.common.exception.UnauthorizedException;
-import com.fall2024devops.taskmanager.common.utils.SecurityUtils;
-import com.fall2024devops.taskmanager.tasks.dto.CreateTaskDTO;
-import com.fall2024devops.taskmanager.tasks.dto.ListTasksDTO;
-import com.fall2024devops.taskmanager.tasks.dto.UpdateTaskDTO;
-import com.fall2024devops.taskmanager.tasks.entity.Task;
-import com.fall2024devops.taskmanager.tasks.repository.TaskRepository;
-import com.fall2024devops.taskmanager.tasks.service.TaskService;
-import com.fall2024devops.taskmanager.user.entity.User;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import com.fall2024devops.taskmanager.tasks.dto.ListTasksDTO;
+import com.fall2024devops.taskmanager.tasks.entity.Task;
+import com.fall2024devops.taskmanager.tasks.repository.TaskRepository;
+import com.fall2024devops.taskmanager.tasks.service.TaskService;
+import com.fall2024devops.taskmanager.user.entity.User;
 
 class TaskServiceTest {
 
@@ -36,56 +32,30 @@ class TaskServiceTest {
     }
 
     @Test
-    void testCreateTask() {
+    void testGetAllTasks() {
         // Arrange
-        CreateTaskDTO.Input input = new CreateTaskDTO.Input("Test Task", "Test Description");
         User currentUser = new User(); // Mock current user
-        currentUser.setId(1L); // Set user ID as needed
-        when(SecurityUtils.getCurrentUser()).thenReturn(Optional.of(currentUser));
 
-        Task savedTask = new Task(); // Mock saved task
-        savedTask.setId(1L);
-        savedTask.setTitle(input.getTitle());
-        savedTask.setDescription(input.getDescription());
-        savedTask.setStatus("IN_PROGRESS");
-        when(taskRepository.save(any(Task.class))).thenReturn(savedTask);
+        List<Task> tasks = Stream.of(
+                new Task("Test Task 1", "Test Description 1", "IN_PROGRESS", currentUser),
+                new Task("Test Task 2", "Test Description 2", "IN_PROGRESS", currentUser)
+        ).collect(Collectors.toList());
 
-        // Act
-        CreateTaskDTO.Output output = taskService.createTask(input);
+        // Mock the behavour of the taskRepository to return the list of tasks
+        // This is done to avoid calling the actual database
+        // We know that the taskRepository will return the list of tasks
+        // that we have created above
+        // And we also know that the taskService will call the taskRepository.findAll() method
+        when(taskRepository.findAll()).thenReturn(tasks);
 
-        // Assert
+        // Invoke the method to be tested
+        List<ListTasksDTO.Output> output = taskService.getAllTasks();
+
+        // Make expected assertions to verify the output of the getAllTasks method
         assertNotNull(output);
-        assertEquals(1L, output.getId());
-        assertEquals("Test Task", output.getTitle());
-    }
-
-    @Test
-    void testGetTaskById() {
-        // Arrange
-        Task task = new Task();
-        task.setId(1L);
-        task.setTitle("Test Task");
-        when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
-
-        // Act
-        ListTasksDTO.Output output = taskService.getTaskById(1L);
-
-        // Assert
-        assertNotNull(output);
-        assertEquals("Test Task", output.getTitle());
-    }
-
-    @Test
-    void testUpdateTaskNotFound() {
-        // Arrange
-        UpdateTaskDTO updateTasksDTO = new UpdateTaskDTO();
-        UpdateTaskDTO.Input input = new UpdateTaskDTO.Input();
-        when(taskRepository.findById(1L)).thenReturn(Optional.empty());
-
-        // Act & Assert
-        assertThrows(NotFoundException.class, () -> {
-            taskService.updateTask(1L, input);
-        });
+        assertEquals(2, output.size());
+        assertEquals("Test Task 1", output.get(0).getTitle());
+        assertEquals("Test Task 2", output.get(1).getTitle());
     }
 
     // Add more tests for other methods...

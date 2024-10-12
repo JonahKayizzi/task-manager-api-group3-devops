@@ -1,62 +1,176 @@
-# TaskManagerApp
+<a name="readme-top"></a>
 
-## Prerequisites
 
-- Java 17 or above
+<div align="center">
+  <img src="" alt="logo" width="140"  height="auto" />
+  <br/>
+
+  <h1><b>Task Management API</b></h1>
+
+</div>
+
+<!-- TABLE OF CONTENTS -->
+
+# 📗 Table of Contents
+
+- [📗 Table of Contents](#-table-of-contents)
+- [📖 TASK MANAGEMENT API ](#-task-management-api-)
+  - [🛠 Built With ](#-built-with-)
+    - [Key Features ](#key-features-)
+  - [💻 Getting Started ](#-getting-started-)
+    - [Prerequisites](#prerequisites)
+    - [Setup](#setup)
+    - [Building](#building)
+    - [Usage](#usage)
+    - [Run tests](#run-tests)
+  - [👥 Authors ](#-authors-)
+  - [🤝 Contributing ](#-contributing-)
+  - [⭐️ Show your support ](#️-show-your-support-)
+  - [🙏 Acknowledgments ](#-acknowledgments-)
+  - [📝 License ](#-license-)
+
+<!-- PROJECT DESCRIPTION -->
+
+# 📖 TASK MANAGEMENT API <a name="about-project"></a>
+
+
+**Task Management API using Spring Boot**
+- Focusing on CI/CD, Dockerization, and Kubernetes deployment. 
+- Implementing a working DevOps pipeline 
+- Monitoring and logging the backend. 
+
+## 🛠 Built With <a name="built-with"></a>
+- Java
+- Bash
+- Data store, .txt file
+- Draw.io, System Design
+
+<!-- Features -->
+
+### Key Features <a name="key-features"></a>
+
+- Creating Tasks
+- Updating Tasks
+- Retrieving Tasks
+- Deleting Tasks
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- GETTING STARTED -->
+
+## 💻 Getting Started <a name="getting-started"></a>
+
+
+To get a local copy up and running, follow these steps.
+
+### Prerequisites
+
+In order to run this project you need:
+
+- Install Java 17 or above
+- Install Maven
+- PostgreSQL
 - IntelliJ IDEA
 - Docker (optional, for running PostgreSQL in a container)
 
-## 1. Installing Java and IntelliJ IDEA
+### Setup
 
-### Java
+Clone this repository to your desired folder:
 
-1. Download and install Java 17 or above from the [official Oracle website](https://www.oracle.com/java/technologies/javase-jdk17-downloads.html) or use a package manager like SDKMAN:
-    ```sh
-    sdk install java [version]
-    ```
+```sh
+  cd my-folder
+  git clone https://github.com/JonahKayizzi/task-manager-api-group3-devops
+```
 
-### IntelliJ IDEA
+### Building
 
-1. Download and install IntelliJ IDEA from the [official JetBrains website](https://www.jetbrains.com/idea/download/).
+Checkout to the main branch, build the program and package to create a JAR file
 
-## 2. Cloning the Repository
+```sh
+cd task-manager-api-group3-devops
+git checkout develop
+docker-compose up-build
+```
 
-1. Clone the repository using Git:
-    ```sh
-    git clone https://github.com/CYIMANA-Faisal/task-manager-api.git
-    cd task-manager-api
-    ```
+### Usage
 
-## 3. Adding .env File
+Use Java to run the JAR file
 
-1. Copy the `.env-sample` file to `.env`:
-    ```sh
-    cp .env-sample .env
-    ```
+```sh
+ java -jar .\target\taskmanager-0.0.1-SNAPSHOT.jar 
+```
 
-2. Update the `.env` file with your configuration details if necessary.
+### Run tests
 
-## 4. Running a Docker PostgreSQL Container
+To run tests, run the following command:
 
-1. Run the following command to start a PostgreSQL container:
-    ```sh
-    docker run --name taskmanager-postgres -e POSTGRES_USER=youruser -e POSTGRES_PASSWORD=your-password -e POSTGRES_DB=taskmanager_db -d -p 5432:5432 postgres
-    ```
+JUnit and Mockito library are to be used for running tests
 
-## 5. Running the Application
+```sh
+  mvn test
+```
 
-1. Open the project in IntelliJ IDEA.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-2. Navigate to `src/main/resources/application.properties` and ensure the database configuration matches your `.env` file.
 
-3. Run the application using the following Maven command:
-    ```sh
-    ./mvnw spring-boot:run
-    ```
+## 👥 Authors <a name="authors"></a>
 
-4. Alternatively, you can run the `TaskManagerApp` class directly from IntelliJ IDEA.
+👤 **Sheila Wafula**
 
-## Additional Information
+- GitHub: [@shishi5089](https://github.com/shishi5089)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/sheila-wafula-6188a419b/)
 
-- The application will be accessible at `http://localhost:8080`.
-- Ensure that the PostgreSQL database is running and accessible before starting the application.
+👤 **Oseno Ewaose-Joseph**
+
+- GitHub: [@oseno-cmu](https://github.com/oseno-cmu)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/oseno-ewaose-joseph-3010741b3/)
+
+👤 **Joseph Fadiji**
+
+- GitHub: [@justWeird](https://github.com/justWeird)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/joseph-fadiji-ba1766173/)
+
+👤 **Jonathan Kayizzi**
+
+- GitHub: [@JonahKayizzi](https://github.com/JonahKayizzi)
+- Twitter: [@JonahKayizzi](https://twitter.com/JonahKayizzi)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/jonathan-kayizzi/)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- CONTRIBUTING -->
+
+## 🤝 Contributing <a name="contributing"></a>
+
+Contributions, issues, and feature requests are welcome!
+
+Feel free to check the [issues page](https://github.com/JonahKayizzi/task-manager-api-group3-devops/issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- SUPPORT -->
+
+## ⭐️ Show your support <a name="support"></a>
+
+
+If you like this project you can give me a ⭐️
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- ACKNOWLEDGEMENTS -->
+
+## 🙏 Acknowledgments <a name="acknowledgements"></a>
+
+
+I would like to thank [Carnegie Mellon University](https://www.linkedin.com/school/carnegie-mellon-university-africa/?originalSubdomain=rw) for arranging this challenge
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- LICENSE -->
+
+## 📝 License <a name="license"></a>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>

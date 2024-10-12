@@ -54,7 +54,7 @@ class TaskServiceTest {
 
         /*
         *********** Act ***************
-        Mock the behavour of the taskRepository to return the list of tasks
+        Mocking the behavour of the taskRepository to return the list of tasks
         This is done to avoid calling the actual database
         We know that the taskRepository will return the list of tasks
         that we have created above
@@ -62,7 +62,7 @@ class TaskServiceTest {
         */
         when(taskRepository.findAll()).thenReturn(tasks);
 
-        // Invoke the method to be tested
+        // Invoking the method to be tested
         List<ListTasksDTO.Output> output = taskService.getAllTasks();
 
         /*
@@ -132,7 +132,7 @@ class TaskServiceTest {
     void testGetTaskById() {
         /*
         ***************** Arrange *******************************
-        Mock the behaviour of the taskRepository.findById() method
+        Mocking the behaviour of the taskRepository.findById() method
         Because the taskService will call this method to get the task by id
         We know that the taskRepository.findById() method will return the task
         We are mocking it to avoid calling the actual database
@@ -275,7 +275,7 @@ class TaskServiceTest {
     void testDeleteTask() {
         /*
         ***************** Arrange *******************************
-        Mock the behaviour of the taskRepository.findById() method
+        Mocking the behaviour of the taskRepository.findById() method
         Because the taskService will call this method to get the task by id
         We know that the taskRepository.findById() method will return the task
         We are mocking it to avoid calling the actual database
@@ -303,7 +303,7 @@ class TaskServiceTest {
     void deleteTaskNotFound() {
         /*
         ***************** Arrange *******************************
-        Mock the behaviour of the taskRepository.findById() method
+        Mocking the behaviour of the taskRepository.findById() method
         Because the taskService will call this method to get the task by id
         We know that the taskRepository.findById() method will return the task
         We are mocking it to avoid calling the actual database

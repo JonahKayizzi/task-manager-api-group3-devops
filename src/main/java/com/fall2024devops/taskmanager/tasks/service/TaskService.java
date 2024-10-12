@@ -26,9 +26,11 @@ public class TaskService {
     }
 
     public CreateTaskDTO.Output createTask(CreateTaskDTO.Input input) {
+        //Checking if the current user is authenticated
         User currentUser = SecurityUtils.getCurrentUser()
                 .orElseThrow(() -> new UnauthorizedException("User not authenticated"));
 
+        //Creating the task object using the input parameter
         Task task = Task.builder()
                 .title(input.getTitle())
                 .description(input.getDescription())
@@ -36,8 +38,10 @@ public class TaskService {
                 .user(currentUser)
                 .build();
 
+        //Creating the task
         Task savedTask = taskRepository.save(task);
 
+        //Displaying the task
         return new CreateTaskDTO.Output(
                 savedTask.getId(),
                 savedTask.getTitle(),
@@ -51,7 +55,10 @@ public class TaskService {
     }
 
     public ListTasksDTO.Output getTaskById(Long id) {
+        //Fetching the task by id
         Task foundTask = taskRepository.findById(id).orElseThrow(() -> new NotFoundException("Task not found"));
+        
+        //Displaying found task
         return new ListTasksDTO.Output(
                 foundTask.getId(),
                 foundTask.getTitle(),
@@ -64,10 +71,10 @@ public class TaskService {
     }
 
     public UpdateTaskDTO.Output updateTask(Long id, UpdateTaskDTO.Input input) {
-        // Fetch the task by id
+        // Fetching the task by id
         Task task = taskRepository.findById(id).orElseThrow(() -> new NotFoundException("Task not found"));
 
-        // Update task fields
+        // Updating task fields
         if (input.getTitle() != null) {
             task.setTitle(input.getTitle());
         }
@@ -78,10 +85,10 @@ public class TaskService {
             task.setStatus(input.getStatus());
         }
 
-        // save the updated task
+        // saving the updated task
         Task updatedTask = taskRepository.save(task);
 
-        // Return the updated task in Output format
+        // Returning the updated task in Output format
         return new UpdateTaskDTO.Output(
                 updatedTask.getId(),
                 updatedTask.getTitle(),
@@ -94,7 +101,9 @@ public class TaskService {
     }
 
     public List<ListTasksDTO.Output> getAllTasks() {
+        //Finding all the tasks
         List<Task> tasks = taskRepository.findAll();
+        //Displaying all the tasks
         return tasks.stream()
                 .map(task -> new ListTasksDTO.Output(
                 task.getId(),
@@ -108,9 +117,11 @@ public class TaskService {
                 .toList();
     }
     public void deleteTask(Long id) {
+        //Finding the task by id
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Task not found"));
         
+        //Deleting the found task
         taskRepository.delete(task);
     }
 }

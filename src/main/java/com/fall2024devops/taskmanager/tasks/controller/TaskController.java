@@ -33,30 +33,35 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    //Create task Endpoint
     @PostMapping
     public ResponseEntity<GenericResponse<CreateTaskDTO.Output>> createTask(@RequestBody @Valid CreateTaskDTO.Input input) {
         CreateTaskDTO.Output createdTask = taskService.createTask(input);
         return ResponseEntity.status(HttpStatus.CREATED).body(new GenericResponse<>("Task created successfully", createdTask));
     }
 
+    //Get Task By Id Endpoint
     @GetMapping("/{id}")
     public ResponseEntity<GenericResponse<ListTasksDTO.Output>> getTaskById(@PathVariable Long id) {
         ListTasksDTO.Output task = taskService.getTaskById(id);
         return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>("Task retrieved successfully", task));
     }
 
+    //Get All Tasks Endpoint
     @GetMapping
     public ResponseEntity<GenericResponse<List<ListTasksDTO.Output>>> getAllTasks() {
         List<ListTasksDTO.Output> tasks = taskService.getAllTasks();
         return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>("Tasks retrieved successfully", tasks));
     }
 
+    //Update Task Endpoint
    @PatchMapping("/{id}")
    public ResponseEntity<GenericResponse<UpdateTaskDTO.Output>> updateTask(@PathVariable Long id, @Valid UpdateTaskDTO.Input taskDto) {
        UpdateTaskDTO.Output updatedTask = taskService.updateTask(id, taskDto);
        return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse<>("Task updated successfully", updatedTask));
    }
 
+   //Delete Task by Id Endpoint
    @DeleteMapping("/{id}")
    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
        taskService.deleteTask(id);

@@ -1,13 +1,13 @@
 <a name="readme-top"></a>
 
 
-<div align="center">
+<!-- <div align="center">
   <img src="" alt="logo" width="140"  height="auto" />
   <br/>
 
   <h1><b>Task Management API</b></h1>
 
-</div>
+</div> -->
 
 <!-- TABLE OF CONTENTS -->
 
@@ -40,10 +40,14 @@
 - Monitoring and logging the backend. 
 
 ## 🛠 Built With <a name="built-with"></a>
-- Java
-- Bash
-- Data store, .txt file
-- Draw.io, System Design
+- Java Spring Framework
+- JUnit for testing
+- Docker for containerization
+- PostgreSQL for database
+- Maven as a build automation tool 
+- Mockito for writing unit tests
+- RESTful APIs for endpoints
+- Swagger for API documentation
 
 <!-- Features -->
 
